@@ -1,7 +1,14 @@
 import {Component} from 'angular2/core';
+import {FileListComponent} from './file/list-component/file-list.component';
+
 
 @Component({
     selector: 'my-app',
-    template: '<h1>My First Angular 2 App</h1>'
+    template: `
+	
+    <file-list></file-list>`,
+    directives: [FileListComponent]
 })
-export class AppComponent { }
+export class AppComponent {
+
+}

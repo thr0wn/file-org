@@ -1,0 +1,18 @@
+<div>
+	<h2>Files:</h2>
+	<ul class="fileList">
+		<li *ngFor="#file of files">
+			<div>
+				<span class="fileName" (click)="showDetail(file)">{{file.name}}</span>
+				<ul class="tagList">
+					<li *ngFor="#tag of file.tags" class="tag">
+						{{tag.name}}
+					</li>
+				</ul>
+				<div *ngIf="file.show" class="fileDesc">
+					{{file.desc}}
+				</div>
+			</div>
+		</li>
+	</ul>
+</div>
