@@ -1,6 +1,6 @@
 import {File} from '../models/file.ts'
 import {Tag} from '../models/tag.ts'
-import {Injectable} from 'angular2/core';
+import {Injectable, EventEmitter} from 'angular2/core'
 
 @Injectable()
 export class FileService {
@@ -28,8 +28,14 @@ export class FileService {
 		tags: this.tags,
 	}
 
+	files:Array<File> = [this.file1, this.file2]
+
 	getFiles() {
-		var files: Array<File> = [this.file1,this.file2];
-		return Promise.resolve(files)
+		return Promise.resolve(this.files)
+	}
+
+	save(file:File){
+		this.files.unshift(file)
+		return Promise.resolve(1)
 	}
 }

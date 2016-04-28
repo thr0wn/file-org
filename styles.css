@@ -1,0 +1,9 @@
+li.tag{
+  display: inline-block;
+    padding: 5px;
+    background: #37408e;
+    color: white;
+    border-radius: 5px;
+    font-size: 12px;
+    margin: 0px 5px;
+}
