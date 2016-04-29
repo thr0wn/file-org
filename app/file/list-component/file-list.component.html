@@ -4,6 +4,7 @@
 		<li *ngFor="#file of files">
 			<div>
 				<span class="fileName" (click)="showDetail(file)">{{file.name}}</span>
+				<span><i class="fa fa-pencil-square-o" (click)="edit(file)"></i></span>
 				<ul class="tagList">
 					<li *ngFor="#tag of file.tags" class="tag">
 						{{tag.name}}

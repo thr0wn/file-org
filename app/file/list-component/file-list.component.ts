@@ -1,18 +1,19 @@
 import {File} from '../models/file'
 import {Tag} from '../models/tag'
 import {Component,OnInit} from 'angular2/core'
+import {Router} from 'angular2/router';
 import {FileService} from '../service/file.service'
 
 
 @Component({
 	selector: 'file-list',
 	templateUrl: './app/file/list-component/file-list.component.html',
-	styleUrls: ['./app/file/list-component/file-list.component.css'],
-	providers: [FileService]
+	styleUrls: ['./app/file/list-component/file-list.component.css']
 })
 
 export class FileListComponent implements OnInit{
-	constructor(private _fileService: FileService) { }
+	constructor(private _router: Router, 
+		private _fileService: FileService) { }
 	
 	files: Array<File>
 
@@ -26,5 +27,10 @@ export class FileListComponent implements OnInit{
 
 	showDetail(file){
 		file.show = !file.show
+	}
+
+	edit(file: File) {
+		let link = ['Edit', { id: file.id }];
+		this._router.navigate(link);
 	}
 }

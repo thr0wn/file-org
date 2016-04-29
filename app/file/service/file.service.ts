@@ -14,7 +14,7 @@ export class FileService {
 	]
 	file1: File = {
 		id: 1,
-		name:'Pedro Ferreira',
+		name: 'Pedro Ferreira',
 		desc: "Cv do pedro ferreira.",
 		path: "/file1",
 		tags: this.tags,
@@ -28,14 +28,26 @@ export class FileService {
 		tags: this.tags,
 	}
 
-	files:Array<File> = [this.file1, this.file2]
+	files: Array<File> = [this.file1, this.file2]
+
+	currentFileId = 3
 
 	getFiles() {
 		return Promise.resolve(this.files)
 	}
 
-	save(file:File){
-		this.files.unshift(file)
+	getFile(id) {
+		return Promise.resolve(this.files.filter(function(file) { return file.id == id })[0])
+	}
+
+	save(file: File) {
+		if(file.id == undefined){
+			file.id = this.currentFileId
+			this.currentFileId = this.currentFileId + 1
+			this.files.unshift(file)	
+		}else{
+
+		}
 		return Promise.resolve(1)
 	}
 }
