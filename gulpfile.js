@@ -1,13 +1,15 @@
-var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
+var gulp = $.help(require('gulp'));
 var path = require('path');
 var del = require('del');
 var mainBowerFiles = require('main-bower-files');
 var argv = require('yargs').argv;
 var browserSync = require('browser-sync').create();
+var merge = require('merge-stream');
 
 var resources = {
     out: 'dist',
+    index: 'app/index.html',
     views: [
         'app/**/*.html'
     ],
@@ -21,22 +23,25 @@ var resources = {
         'app/assets/css/*.css',
         'app/**/*.css'
     ],
+    fonts: [
+        'bower_components/components-font-awesome/fonts/**/*'
+    ],
     imgs: 'app/assets/imgs/**/*',
-    sourcemaps: typeof argv.sourcemaps != 'undefined' ? argv.sourcemaps : !argv.release
+    sourcemaps: typeof argv.sourcemaps != 'undefined' ? argv.sourcemaps : !argv.release,
 };
 
-gulp.task('clean', function() {
+gulp.task('clean', function () {
     return del([
         resources.out,
         resources.javascript
     ]);
 });
 
-gulp.task('typescript', function() {
+gulp.task('typescript', function () {
     var project = $.typescript.createProject('tsconfig.json', {
         typescript: require('typescript')
     });
-    var tsResult = gulp.src(resources.typescript, {base: __dirname})
+    var tsResult = gulp.src(resources.typescript, { base: __dirname })
         .pipe($.if(resources.sourcemaps, $.sourcemaps.init()))
         .pipe($.typescript(project));
     return tsResult.js
@@ -44,18 +49,18 @@ gulp.task('typescript', function() {
         .pipe(gulp.dest(__dirname));
 });
 
-gulp.task('inject', function() {
+gulp.task('inject', function () {
     var appFiles = gulp.src(resources.css.concat(resources.javascript), { read: false });
     var vendorFiles = gulp.src(mainBowerFiles(), { read: false });
 
-    return gulp.src(resources.views)
-        .pipe($.inject(appFiles, { name: 'app', removeTags: true }))
-        .pipe($.inject(vendorFiles, { name: 'vendor', removeTags: true }))
+    return gulp.src(resources.index)
+        .pipe($.inject(appFiles, { name: 'app', removeTags: false }))
+        .pipe($.inject(vendorFiles, { name: 'vendor', removeTags: false }))
         .pipe(gulp.dest(resources.out));
 });
 
-gulp.task('useref', function() {
-    var useref = gulp.src(path.join(resources.tmp, '**/*.html'))
+gulp.task('useref', function () {
+    var useref = gulp.src(path.join(resources.out, '**/*.html'))
         .pipe($.useref({ searchPath: __dirname, noconcat: !argv.release }));
     if (argv.release) {
         useref = useref
@@ -68,17 +73,37 @@ gulp.task('useref', function() {
         .pipe(gulp.dest(resources.out));
 });
 
-gulp.task('copy', function() {
-    return gulp.src(resources.imgs, { base: resources.assets })
+gulp.task('copy', function () {
+    var stream = merge();
+
+    var assets = gulp.src(resources.imgs, { base: resources.assets })
         .pipe(gulp.dest(resources.out));
+    stream.add(assets);
+
+    if (argv.release) {
+        var html = gulp.src(resources.views, { base: __dirname })
+        .pipe(gulp.dest(resources.out));
+        stream.add(html);
+
+        var fonts = gulp.src(resources.fonts)
+            .pipe(gulp.dest(path.join(resources.out, 'fonts')));
+        stream.add(fonts);
+    }
+
+    return stream;
 });
 
-gulp.task('build', function(cb) {
+gulp.task('build', '', function (cb) {
     // $.sequence('clean', ['copy', 'fonts'], 'inject', 'useref', cb);
-    $.sequence('clean', ['typescript', 'copy'], 'inject', cb);
+    $.sequence('clean', ['typescript', 'copy'], 'inject', 'useref', cb);
+}, {
+  options: {
+    '--release': 'generate release ready dist folder',
+    '--sourcemaps': 'generate sourcemaps'
+  }
 });
 
-gulp.task('serve', ['build'], function() {
+gulp.task('serve', ['build'], function () {
     var app = require('./bin/www');
 
     // Serve files from the root of this project
@@ -89,8 +114,8 @@ gulp.task('serve', ['build'], function() {
     $.watch([
         'bower.json',
         'public/**/*'
-    ], function() {
-        $.sequence('build', function() {
+    ], function () {
+        $.sequence('build', function () {
             setTimeout(browserSync.reload, 1000);
         });
     });
