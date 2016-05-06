@@ -1,0 +1,71 @@
+"use strict";
+var mongoose = require('mongoose');
+var crypto = require('crypto');
+var user_1 = require('../../../shared/src/models/user');
+var Constants = require('../config/constants');
+var userSchema = new mongoose.Schema({
+    name: {
+        type: String
+    },
+    email: {
+        type: String,
+        trim: true,
+        required: 'E-mail is required',
+        unique: true,
+        match: [/.+\@.+/, "Please fill a valid e-mail address"]
+    },
+    password: {
+        type: String,
+        validate: [
+            function (password) {
+                return password && password.length >= 6;
+            },
+            'Password should be longer'
+        ],
+        required: 'Password is required',
+    },
+    role: {
+        type: Number,
+        required: true,
+        validate: function (role) {
+            return typeof role !== 'undefined' && !!user_1.Roles[role];
+        }
+    },
+    salt: {
+        type: String
+    },
+    created: {
+        type: Date,
+        default: Date.now
+    }
+});
+userSchema.method('authenticate', function (password) {
+    return this.password === this.hashPassword(password);
+});
+userSchema.method('hashPassword', function (password) {
+    return crypto.pbkdf2Sync(password, this.salt, 10000, 64).toString('base64');
+});
+userSchema.static('findByEmail', function (email) {
+    return this.findOne({ email: email });
+});
+userSchema.pre('save', function (next) {
+    if (this.password) {
+        this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
+        this.password = this.hashPassword(this.password);
+    }
+    next();
+});
+userSchema.set('toJSON', {
+    getters: true,
+    virtuals: true
+});
+if (!userSchema.options.toObject)
+    userSchema.options.toObject = {};
+userSchema.options.toObject.transform = function (doc, ret, options) {
+    delete ret.salt;
+};
+exports.User = mongoose.model(Constants.Mongoose.USER_MODEL, userSchema);
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = exports.User;
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNlcnZlci9zcmMvbW9kZWxzL3VzZXIudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IjtBQUFBLElBQVksUUFBUSxXQUFNLFVBQVUsQ0FBQyxDQUFBO0FBQ3JDLElBQVksTUFBTSxXQUFNLFFBQVEsQ0FBQyxDQUFBO0FBRWpDLHFCQUE2QyxpQ0FBaUMsQ0FBQyxDQUFBO0FBQy9FLElBQVksU0FBUyxXQUFNLHFCQUFxQixDQUFDLENBQUE7QUFnQmpELElBQUksVUFBVSxHQUFTLElBQUksUUFBUSxDQUFDLE1BQU0sQ0FBQztJQUMxQyxJQUFJLEVBQUU7UUFDTCxJQUFJLEVBQUUsTUFBTTtLQUNaO0lBQ0QsS0FBSyxFQUFFO1FBQ04sSUFBSSxFQUFFLE1BQU07UUFDWixJQUFJLEVBQUUsSUFBSTtRQUNWLFFBQVEsRUFBRSxvQkFBb0I7UUFDOUIsTUFBTSxFQUFFLElBQUk7UUFDWixLQUFLLEVBQUUsQ0FBQyxRQUFRLEVBQUUsb0NBQW9DLENBQUM7S0FDdkQ7SUFDRCxRQUFRLEVBQUU7UUFDVCxJQUFJLEVBQUUsTUFBTTtRQUNaLFFBQVEsRUFBRTtZQUNULFVBQVMsUUFBZ0I7Z0JBQ3hCLE1BQU0sQ0FBQyxRQUFRLElBQUksUUFBUSxDQUFDLE1BQU0sSUFBSSxDQUFDLENBQUM7WUFDekMsQ0FBQztZQUNELDJCQUEyQjtTQUMzQjtRQUNELFFBQVEsRUFBRSxzQkFBc0I7S0FDaEM7SUFDRCxJQUFJLEVBQUU7UUFDTCxJQUFJLEVBQUUsTUFBTTtRQUNaLFFBQVEsRUFBRSxJQUFJO1FBQ2QsUUFBUSxFQUFFLFVBQVMsSUFBVztZQUM3QixNQUFNLENBQUMsT0FBTyxJQUFJLEtBQUssV0FBVyxJQUFJLENBQUMsQ0FBQyxZQUFLLENBQUMsSUFBSSxDQUFDLENBQUM7UUFDckQsQ0FBQztLQUNEO0lBQ0QsSUFBSSxFQUFFO1FBQ0wsSUFBSSxFQUFFLE1BQU07S0FDWjtJQUNELE9BQU8sRUFBRTtRQUNSLElBQUksRUFBRSxJQUFJO1FBQ1YsT0FBTyxFQUFFLElBQUksQ0FBQyxHQUFHO0tBQ2pCO0NBQ0QsQ0FBQyxDQUFDO0FBR0gsVUFBVSxDQUFDLE1BQU0sQ0FBQyxjQUFjLEVBQUUsVUFBUyxRQUFnQjtJQUMxRCxNQUFNLENBQUMsSUFBSSxDQUFDLFFBQVEsS0FBSyxJQUFJLENBQUMsWUFBWSxDQUFDLFFBQVEsQ0FBQyxDQUFDO0FBQ3RELENBQUMsQ0FBQyxDQUFDO0FBRUgsVUFBVSxDQUFDLE1BQU0sQ0FBQyxjQUFjLEVBQUUsVUFBUyxRQUFnQjtJQUMxRCxNQUFNLENBQUMsTUFBTSxDQUFDLFVBQVUsQ0FBQyxRQUFRLEVBQUUsSUFBSSxDQUFDLElBQUksRUFBRSxLQUFLLEVBQUUsRUFBRSxDQUFDLENBQUMsUUFBUSxDQUFDLFFBQVEsQ0FBQyxDQUFDO0FBQzdFLENBQUMsQ0FBQyxDQUFDO0FBR0gsVUFBVSxDQUFDLE1BQU0sQ0FBQyxhQUFhLEVBQUUsVUFBUyxLQUFhO0lBQ3RELE1BQU0sQ0FBQyxJQUFJLENBQUMsT0FBTyxDQUFDLEVBQUUsS0FBSyxFQUFFLEtBQUssRUFBRSxDQUFDLENBQUM7QUFDdkMsQ0FBQyxDQUFDLENBQUM7QUFHSCxVQUFVLENBQUMsR0FBRyxDQUFDLE1BQU0sRUFBRSxVQUFTLElBQWM7SUFDN0MsRUFBRSxDQUFDLENBQUMsSUFBSSxDQUFDLFFBQVEsQ0FBQyxDQUFDLENBQUM7UUFDbkIsSUFBSSxDQUFDLElBQUksR0FBRyxJQUNYLE1BQU0sQ0FBQyxNQUFNLENBQUMsV0FBVyxDQUFDLEVBQUUsQ0FBQyxDQUFDLFFBQVEsQ0FBQyxRQUFRLENBQUMsRUFBRSxRQUFRLENBQUMsQ0FBQztRQUM3RCxJQUFJLENBQUMsUUFBUSxHQUFHLElBQUksQ0FBQyxZQUFZLENBQUMsSUFBSSxDQUFDLFFBQVEsQ0FBQyxDQUFDO0lBQ2xELENBQUM7SUFDRCxJQUFJLEVBQUUsQ0FBQztBQUNSLENBQUMsQ0FBQyxDQUFDO0FBRUgsVUFBVSxDQUFDLEdBQUcsQ0FBQyxRQUFRLEVBQUU7SUFDeEIsT0FBTyxFQUFFLElBQUk7SUFDYixRQUFRLEVBQUUsSUFBSTtDQUNkLENBQUMsQ0FBQztBQUVILEVBQUUsQ0FBQyxDQUFDLENBQUMsVUFBVSxDQUFDLE9BQU8sQ0FBQyxRQUFRLENBQUM7SUFBQyxVQUFVLENBQUMsT0FBTyxDQUFDLFFBQVEsR0FBRyxFQUFFLENBQUM7QUFDbkUsVUFBVSxDQUFDLE9BQU8sQ0FBQyxRQUFRLENBQUMsU0FBUyxHQUFHLFVBQVMsR0FBRyxFQUFFLEdBQUcsRUFBRSxPQUFPO0lBQ2pFLE9BQU8sR0FBRyxDQUFDLElBQUksQ0FBQztBQUNqQixDQUFDLENBQUM7QUFFUyxZQUFJLEdBQWdCLFFBQVEsQ0FBQyxLQUFLLENBQVcsU0FBUyxDQUFDLFFBQVEsQ0FBQyxVQUFVLEVBQUUsVUFBVSxDQUFDLENBQUM7QUFFbkc7a0JBQWUsWUFBSSxDQUFDIiwiZmlsZSI6InNlcnZlci9zcmMvbW9kZWxzL3VzZXIuanMiLCJzb3VyY2VSb290IjoiLi4vLi4vLi4ifQ==
