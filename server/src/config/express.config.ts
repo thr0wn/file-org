@@ -5,9 +5,7 @@ import * as path from 'path';
 
 import * as constants from '../config/constants';
 import {loggerConnect} from './log4js.config';
-import loginRoutes from '../routes/loginRoutes';
-import indexRoutes from '../routes/indexRoutes';
-import userRoutes from '../routes/userRoutes';
+import {FileRoutes} from '../routes/file.routes';
 
 export function newApp(): express.Application {
 	var app = express();
@@ -23,12 +21,10 @@ export function newApp(): express.Application {
 	app.use(bodyParser.json());
 
 	// routes
-	loginRoutes.init(app);
-	indexRoutes.init(app);
-	userRoutes.init(app);
+	new FileRoutes(app);
 
 	// static files
-	app.use(express.static(constants.STATIC_DIR));
+	app.use(express.static(constants.STATIC_SERVER_DIR));
 
 	return app;
-}
+};

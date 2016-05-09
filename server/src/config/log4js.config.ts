@@ -22,6 +22,5 @@ log4js.configure({
 	replaceConsole: true
 });
 
-export var logger = log4js.getLogger(LOG_METADATA.name);
-export var loggerConnect = log4js.connectLogger(logger, { level: log4js.levels.DEBUG, format: ':method - :url - :status - :response-timems' });
-
+export let logger = log4js.getLogger(LOG_METADATA.name);
+export let loggerConnect = log4js.connectLogger(logger, { level: log4js.levels.DEBUG, format: ':method - :url - :status - :response-timems' });

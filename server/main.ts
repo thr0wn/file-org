@@ -1,15 +1,12 @@
+import './src/config/env.config';
 import './src/config/log4jsConfig';
-import MongooseConfig from './src/config/mongooseConfig';
-import ExpressConfig from './src/config/expressConfig';
-import PassportConfig from './src/config/passportConfig';
-import * as Constants from './src/config/constants';
+import * as mongooseConfig from './src/config/mongoose.config';
+import * as expressConfig from './src/config/express.config';
+import * as constants from './src/config/constants';
 
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+var db = mongooseConfig.newConnection();
+var app = expressConfig.newApp();
 
-var db = MongooseConfig.newConnection();
-var server = ExpressConfig.newApp();
-var passport = PassportConfig.init();
+app.listen(constants.SERVER_PORT);
 
-server.listen(Constants.SERVER_PORT);
-
-console.log('Server running at http://localhost:' + Constants.SERVER_PORT + '/');
+console.info('Server running at http://localhost:' + constants.SERVER_PORT + '/');

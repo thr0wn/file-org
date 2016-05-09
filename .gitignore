@@ -3,4 +3,7 @@ node_modules/
 bower_components/
 app/**/*.js
 app/**/*.js.map
+server/**/*.js
+server/**/*.js.map
+server/files/
 dist
