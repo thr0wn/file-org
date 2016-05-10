@@ -3,9 +3,12 @@ var gulp = $.help(require('gulp'));
 var path = require('path');
 var del = require('del');
 var mainBowerFiles = require('main-bower-files');
-var argv = require('yargs').argv;
 var browserSync = require('browser-sync').create();
 var merge = require('merge-stream');
+
+// Load config properties
+process.env.NODE_CONFIG_DIR = 'build/properties';
+var config = require('config');
 
 var resources = {
     out: 'dist',
@@ -26,8 +29,7 @@ var resources = {
     fonts: [
         'bower_components/components-font-awesome/fonts/**/*'
     ],
-    imgs: 'app/assets/imgs/**/*',
-    sourcemaps: typeof argv.sourcemaps != 'undefined' ? argv.sourcemaps : !argv.release,
+    imgs: 'app/assets/imgs/**/*'
 };
 
 gulp.task('clean', function () {
@@ -38,10 +40,11 @@ gulp.task('clean', function () {
 });
 
 gulp.task('typescript', function () {
-    var project = $.typescript.createProject('tsconfig.json', {
+    var project = $.typescript.createProject('app/tsconfig.json', {
         typescript: require('typescript')
     });
-    var tsResult = gulp.src(resources.typescript, { base: __dirname })
+    var base = path.join(__dirname, 'app');
+    var tsResult = gulp.src(resources.typescript, {cwd: base})
         .pipe($.if(resources.sourcemaps, $.sourcemaps.init()))
         .pipe($.typescript(project));
     return tsResult.js
@@ -61,8 +64,8 @@ gulp.task('inject', function () {
 
 gulp.task('useref', function () {
     var useref = gulp.src(path.join(resources.out, '**/*.html'))
-        .pipe($.useref({ searchPath: __dirname, noconcat: !argv.release }));
-    if (argv.release) {
+        .pipe($.useref({ searchPath: __dirname, noconcat: !config.get('build.concat') }));
+    if (config.get('build.minify')) {
         useref = useref
             .pipe($.if('*.js', $.uglify()))
             .pipe($.if('*.css', $.minifyCss()))
@@ -80,7 +83,7 @@ gulp.task('copy', function () {
         .pipe(gulp.dest(resources.out));
     stream.add(assets);
 
-    if (argv.release) {
+    if (config.get('build.minify')) {
         var html = gulp.src(resources.views, { base: __dirname })
         .pipe(gulp.dest(resources.out));
         stream.add(html);

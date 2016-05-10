@@ -1,4 +1,3 @@
-import './src/config/env.config';
 import './src/config/log4jsConfig';
 import * as mongooseConfig from './src/config/mongoose.config';
 import * as expressConfig from './src/config/express.config';
