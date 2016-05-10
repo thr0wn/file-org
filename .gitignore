@@ -6,4 +6,5 @@ app/**/*.js.map
 server/**/*.js
 server/**/*.js.map
 server/files/
+server/logs/
 dist

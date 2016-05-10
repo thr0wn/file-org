@@ -11,10 +11,10 @@ if (!fs.existsSync(LOG_METADATA.dir)) {
 
 log4js.configure({
 	appenders: [
+		{type: 'console'},
 		{
 			type: 'dateFile',
-			filename: LOG_METADATA.base,
-			category: LOG_METADATA.name,
+			filename: constants.LOG_FILE,
 			pattern: '-yyyy-MM-dd',
 			alwaysIncludePattern: true
 		}
