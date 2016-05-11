@@ -22,8 +22,12 @@ export function newApp(): express.Application {
 	// routes
 	new FileRoutes(app);
 
-	// static files
-	app.use(express.static(constants.SERVER_STATIC_DIR));
+	// static directories
+	var dirs = constants.SERVER_STATIC_DIR.split(',');
+	dirs.forEach((dir) => {
+		var absDir = path.join(__dirname, '../../..', dir);
+		app.use(express.static(absDir));
+	})
 
 	return app;
 };

@@ -43,6 +43,7 @@ requireTask('typescript-server');
 requireTask('inject');
 requireTask('useref');
 requireTask('copy');
+requireTask('serve');
 
 gulp.task('build', '', function (cb) {
 	$.sequence('clean', ['typescript-app', 'typescript-server', 'copy'], 'inject', 'useref', cb);
