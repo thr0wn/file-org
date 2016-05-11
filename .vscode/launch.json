@@ -8,7 +8,7 @@
             "program": "${workspaceRoot}/server/main.js",
             "stopOnEntry": false,
             "args": [],
-            "cwd": "${workspaceRoot}/server",
+            "cwd": "${workspaceRoot}",
             "preLaunchTask": "build",
             "runtimeExecutable": null,
             "runtimeArgs": [

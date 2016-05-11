@@ -2,7 +2,6 @@ import * as express from 'express';
 import * as compression from 'compression';
 import * as bodyParser from 'body-parser';
 import * as path from 'path';
-
 import * as constants from '../config/constants';
 import {loggerConnect} from './log4js.config';
 import {FileRoutes} from '../routes/file.routes';
@@ -24,7 +23,7 @@ export function newApp(): express.Application {
 	new FileRoutes(app);
 
 	// static files
-	app.use(express.static(constants.STATIC_SERVER_DIR));
+	app.use(express.static(constants.SERVER_STATIC_DIR));
 
 	return app;
 };

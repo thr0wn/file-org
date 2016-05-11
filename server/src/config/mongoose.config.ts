@@ -6,7 +6,7 @@ export function newConnection() {
     { server: { reconnectTries: Number.MAX_VALUE } },
     (err) => {
         if(err) {
-            console.error('Mongoose connect error. Terminating...');
+            console.error('Mongodb/Mongoose connect error. Terminating...');
             process.exit();
         }
     });

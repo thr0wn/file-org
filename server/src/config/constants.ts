@@ -3,7 +3,7 @@ process.env.NODE_CONFIG_DIR = path.join(__dirname, '../../../build/properties');
 import * as config from 'config';
 
 // files and directories
-export let STATIC_SERVER_DIR = path.join(__dirname, '../../../dist');
+export let SERVER_STATIC_DIR = path.join(__dirname, '../../..', config.get<string>('server.static.dir'));
 export let UPLOAD_DIR = path.join(__dirname, '../../files');
 export let LOG_FILE = path.join(__dirname, '../../logs/main.log');
 export let SESSION_SECRET = 'lHCBrJg6zlTluLLPaObMcEZMcqDt6LCAamG1ByOWcN1cjAKsL0iULKpGA6PqPXV';
