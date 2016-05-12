@@ -14,7 +14,7 @@ log4js.configure({
 		{
 			type: 'dateFile',
 			filename: constants.LOG_FILE,
-			category: LOG_METADATA.name,
+			category: 'main',
 			pattern: '-yyyy-MM-dd',
 			alwaysIncludePattern: true
 		}
@@ -22,5 +22,5 @@ log4js.configure({
 	replaceConsole: false
 });
 
-export let logger = log4js.getLogger(LOG_METADATA.name);
-export let loggerConnect = log4js.connectLogger(logger, { level: log4js.levels.DEBUG, format: ':method - :url - :status - :response-timems' });
+export const logger = log4js.getLogger('main');
+export const loggerConnect = log4js.connectLogger(logger, { level: log4js.levels.DEBUG, format: ':method - :url - :status - :response-timems' });

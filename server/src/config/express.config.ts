@@ -3,8 +3,9 @@ import * as compression from 'compression';
 import * as bodyParser from 'body-parser';
 import * as path from 'path';
 import * as constants from '../config/constants';
-import {loggerConnect} from './log4js.config';
+import {logger, loggerConnect} from './log4js.config';
 import {FileRoutes} from '../routes/file.routes';
+import {TagRoutes} from '../routes/tag.routes';
 
 export function newApp(): express.Application {
 	var app = express();
@@ -21,6 +22,7 @@ export function newApp(): express.Application {
 
 	// routes
 	new FileRoutes(app);
+	new TagRoutes(app);
 
 	// static directories
 	var dirs = constants.SERVER_STATIC_DIR.split(',');
@@ -29,5 +31,16 @@ export function newApp(): express.Application {
 		app.use(express.static(absDir));
 	})
 
+	// error handler
+	app.use(<ErrorRequestHandler>(err, req, res, next) => {
+		logger.error(err.stack);
+		if (process.env.NODE_ENV === 'development') {
+			// will print stacktrace
+			next(err);
+		} else {
+			// no stacktraces leaked to user
+			res.status(err.status || 500).send(err.message).send();
+		}
+	});
 	return app;
 };
