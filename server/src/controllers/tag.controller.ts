@@ -1,10 +1,10 @@
 import * as express from 'express';
 import * as constants from '../config/constants';
-import {TagModel} from '../models/tag.model';
+import {Tag} from '../models/tag.model';
 
 export class TagController {
 	public create(req: express.Request, res: express.Response, next: express.NextFunction): void {
-		var tag = new TagModel(req.body);
+		var tag = new Tag(req.body);
 		tag.save()
 			.then(() => {
 				res.sendStatus(200);
@@ -19,7 +19,7 @@ export class TagController {
 			});
 	}
 	public list(req: express.Request, res: express.Response, next: express.NextFunction): void {
-		TagModel.find({})
+		Tag.find({})
 			.exec()
 			.then((tags) => {
 				res.status(200).send(tags);

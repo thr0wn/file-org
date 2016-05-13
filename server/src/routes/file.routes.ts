@@ -6,6 +6,7 @@ export class FileRoutes {
 	constructor(app: express.Application) {
 		var controller = new FileController();
 		app.route('/files')
+			.get(controller.list)
 			.post(controller.create);
 	}
 }

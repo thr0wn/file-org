@@ -1,11 +1,11 @@
 import * as mongoose from 'mongoose';
 
-export class Tag {
+export interface ITag {
 	id: string;
 	name: string;
 }
 
-export interface ITagDoc extends Tag, mongoose.Document {
+export interface ITagDoc extends ITag, mongoose.Document {
 	id: string;
 }
 
@@ -20,4 +20,4 @@ var tagSchema = new mongoose.Schema({
 	}
 });
 
-export var TagModel = <ITagModel>mongoose.model<ITagDoc>('Tag', tagSchema, 'tags');
+export var Tag = <ITagModel>mongoose.model<ITagDoc>('Tag', tagSchema, 'tags');

@@ -1,16 +1,16 @@
 import * as mongoose from 'mongoose';
-import {Tag} from './tag.model';
+import {ITag} from './tag.model';
 import * as constants from '../config/constants';
 
-export class File {
+export interface IFile {
 	id: string;
 	name: string;
 	desc: string;
 	path: string;
-	tags: Tag[]|string = [];
+	tags: ITag[]|string[];
 }
 
-export interface IFileDoc extends File, mongoose.Document {
+export interface IFileDoc extends IFile, mongoose.Document {
 	id: string;
 }
 
@@ -30,4 +30,4 @@ var fileSchema = new mongoose.Schema({
 	tags: [{type: mongoose.Schema.Types.ObjectId, ref: 'Tag'}]
 });
 
-export var FileModel = <IFileModel>mongoose.model<IFileDoc>('File', fileSchema, 'files');
+export var File = <IFileModel>mongoose.model<IFileDoc>('File', fileSchema, 'files');
