@@ -30,4 +30,6 @@ var fileSchema = new mongoose.Schema({
 	tags: [{type: mongoose.Schema.Types.ObjectId, ref: 'Tag'}]
 });
 
+fileSchema.set('toJSON', { getters: true, virtuals: true });
+
 export var File = <IFileModel>mongoose.model<IFileDoc>('File', fileSchema, 'files');

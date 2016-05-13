@@ -20,4 +20,6 @@ var tagSchema = new mongoose.Schema({
 	}
 });
 
+tagSchema.set('toJSON', { getters: true, virtuals: true });
+
 export var Tag = <ITagModel>mongoose.model<ITagDoc>('Tag', tagSchema, 'tags');
