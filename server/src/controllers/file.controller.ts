@@ -31,6 +31,7 @@ export class FileController {
 	}
 	public list(req: express.Request, res: express.Response, next: express.NextFunction): void {
 		File.find({})
+			.populate('tags')
 			.exec()
 			.then((files) => {
 				res.status(200).send(files);
