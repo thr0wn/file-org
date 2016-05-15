@@ -1,29 +1,57 @@
 {
-  "name": "angular2-quickstart",
+  "name": "file-org",
   "version": "1.0.0",
   "scripts": {
-    "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
+    "start": "gulp serve",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "lite": "lite-server",
     "typings": "typings",
     "docker-build": "docker build -t ng2-quickstart .",
     "docker": "npm run docker-build && docker run -it --rm -p 3000:3000 -p 3001:3001 ng2-quickstart",
-    "postinstall": "typings install"
+    "postinstall": "gulp postinstall"
   },
   "license": "ISC",
   "dependencies": {
     "angular2": "2.0.0-beta.14",
-    "systemjs": "0.19.25",
+    "body-parser": "^1.15.1",
+    "compression": "^1.6.1",
     "es6-shim": "^0.35.0",
+    "express": "^4.13.4",
+    "log4js": "^0.6.36",
+    "mongoose": "^4.4.15",
+    "multer": "^1.1.0",
+    "q": "^1.4.1",
     "reflect-metadata": "0.1.2",
     "rxjs": "5.0.0-beta.2",
+    "systemjs": "0.19.25",
     "zone.js": "0.6.6"
   },
   "devDependencies": {
+    "browser-sync": "^2.12.5",
     "concurrently": "^2.0.0",
+    "config": "^1.20.1",
+    "del": "^2.2.0",
+    "gulp": "^3.9.1",
+    "gulp-batch": "^1.0.5",
+    "gulp-help": "^1.6.1",
+    "gulp-if": "^2.0.0",
+    "gulp-inject": "^3.0.0",
+    "gulp-load-plugins": "^1.2.2",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-rev": "^7.0.0",
+    "gulp-rev-replace": "^0.4.3",
+    "gulp-sequence": "^0.4.5",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-typescript": "^2.13.4",
+    "gulp-uglify": "^1.5.3",
+    "gulp-useref": "^3.1.0",
     "lite-server": "^2.2.0",
+    "main-bower-files": "^2.13.0",
+    "merge-stream": "^1.0.0",
+    "properties": "^1.2.1",
     "typescript": "^1.8.9",
-    "typings":"^0.7.12"
+    "typings": "^0.7.12",
+    "yargs": "^4.7.0"
   }
 }

@@ -1,4 +1,10 @@
-typings/
+**/typings/
 node_modules/
-*.js
-*.js.map
+bower_components/
+app/**/*.js
+app/**/*.js.map
+server/**/*.js
+server/**/*.js.map
+server/files/
+server/logs/
+dist
