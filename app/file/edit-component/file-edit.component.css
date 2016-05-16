@@ -1,7 +1,27 @@
+ul{
+	padding: 0px;
+}
+.tag{
+	margin-right: 5px;
+}
 .input{
-	padding: 10px 0px;
-	margin: 5px 0px;
+	margin: 15px 0px;
 }
 .input label{
 	display: block;
+}
+.input input[type="text"]{
+	background: none;
+	border: 1px solid #ccc;
+	padding: 5px;
+}
+.btn{
+	background: #4e8abe;
+	padding: 10px 20px;
+	border: 1px solid #fafafa;
+	color: white;
+	cursor: pointer;
+}
+.btn:hover{
+	background: #6380a2;
 }

@@ -1,8 +1,7 @@
 <div>
-	<h2>Files:</h2>
 	<ul class="fileList">
 		<li *ngFor="#file of files">
-			<div>
+			<div class="fileLine">
 				<span class="fileName" (click)="showDetail(file)">{{file.name}}</span>
 				<span><i class="fa fa-pencil-square-o" (click)="edit(file)"></i></span>
 				<ul class="tagList">

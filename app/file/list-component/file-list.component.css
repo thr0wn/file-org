@@ -1,23 +1,13 @@
 ul{
-	list-style: none;
+	list-style-type: none;
 	padding: 0px;
 }
-.fileName{
-	font-size: 24px;
-	padding: 5px;
-	cursor: pointer;
-}
-.fileDesc{
-	padding: 5px;
-	font-size: 16px;
-}
-.fileList{
-	padding: 0px 20px;
-	width:400px;
-	position: relative;
-}
 .tagList{
-	display: inline-block;
-	position: absolute;
-	right: 0px;
+}
+.tagList > li{
+	margin-right: 5px; 
+}
+.fileLine{
+	position: relative;
+	margin: 20px 0px;
 }

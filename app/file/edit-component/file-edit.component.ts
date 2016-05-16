@@ -2,7 +2,7 @@ import {File} from '../models/file'
 import {Tag} from '../models/tag'
 import {Component, OnInit} from 'angular2/core'
 import {RouteParams, Router} from 'angular2/router';
-import {FileService} from '../service/file.service'
+import {FileService} from '../service/file.service';
 
 
 @Component({

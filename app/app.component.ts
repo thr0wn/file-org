@@ -10,8 +10,11 @@ import {FileEditComponent} from './file/edit-component/file-edit.component';
     	<div class="nav">
 	    <a [routerLink]="['List']">Home</a>
 	    <a [routerLink]="['Create']">Create</a>
+	    <a [routerLink]="['Street']">Street</a>
 	    </div>
-	    <router-outlet></router-outlet>
+	    <div class="content">
+	    	<router-outlet></router-outlet>
+	    </div>
     </div>`,
     directives: [ROUTER_DIRECTIVES],
     providers: [ROUTER_PROVIDERS]
