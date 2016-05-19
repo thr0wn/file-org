@@ -32,4 +32,4 @@ var fileSchema = new mongoose.Schema({
 
 fileSchema.set('toJSON', { getters: true, virtuals: true });
 
-export var File = <IFileModel>mongoose.model<IFileDoc>('File', fileSchema, 'files');
+export const File = <IFileModel>mongoose.model<IFileDoc>('File', fileSchema, 'files');

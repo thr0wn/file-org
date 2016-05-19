@@ -8,7 +8,7 @@ import {FileRoutes} from '../routes/file.routes';
 import {TagRoutes} from '../routes/tag.routes';
 
 export function newApp(): express.Application {
-	var app = express();
+	const app = express();
 
 	// middlewares
 	if (process.env.NODE_ENV === 'production') {
@@ -25,9 +25,9 @@ export function newApp(): express.Application {
 	new TagRoutes(app);
 
 	// static directories
-	var dirs = constants.SERVER_STATIC_DIR.split(',');
+	const dirs = constants.SERVER_STATIC_DIR.split(',');
 	dirs.forEach((dir) => {
-		var absDir = path.join(__dirname, '../../..', dir);
+		const absDir = path.join(__dirname, '../../..', dir);
 		app.use(express.static(absDir));
 	})
 
@@ -42,5 +42,6 @@ export function newApp(): express.Application {
 			res.status(err.status || 500).send(err.message).send();
 		}
 	});
+
 	return app;
 };

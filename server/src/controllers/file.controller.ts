@@ -14,7 +14,7 @@ export class FileController {
 					res.sendStatus(400);
 					return;
 				}
-				var file = new File();
+				const file = new File();
 				file._id = req.file.filename.replace(/\..+$/, '');
 				file.name = req.body.name;
 				file.name = req.body.name;
@@ -40,19 +40,19 @@ export class FileController {
 			.catch(next);
 	}
 	static uploadHandler = (() => {
-		var storage = multer.diskStorage({
+		const storage = multer.diskStorage({
 			destination: (req, file, cb) => cb(null, constants.UPLOAD_DIR),
 			filename: (req, file, cb) => {
-				var id = new mongoose.Types.ObjectId();
-				var filemedata = path.parse(file.originalname);
+				const id = new mongoose.Types.ObjectId();
+				const filemedata = path.parse(file.originalname);
 				cb(null, id + filemedata.ext);
 			}
 		});
-		var multerOptions: multer.Options = {
+		const multerOptions: multer.Options = {
 			dest: constants.UPLOAD_DIR,
 			storage: storage
 		};
-		var rawUploadHandler = multer(multerOptions).single('file');
+		const rawUploadHandler = multer(multerOptions).single('file');
 		return q.nbind(rawUploadHandler, rawUploadHandler);
 	})();
 }

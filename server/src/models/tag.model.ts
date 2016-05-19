@@ -12,7 +12,7 @@ export interface ITagDoc extends ITag, mongoose.Document {
 export interface ITagModel extends mongoose.Model<ITagDoc> {
 }
 
-var tagSchema = new mongoose.Schema({
+const tagSchema = new mongoose.Schema({
 	name: {
 		type: String,
 		required: true,
@@ -22,4 +22,4 @@ var tagSchema = new mongoose.Schema({
 
 tagSchema.set('toJSON', { getters: true, virtuals: true });
 
-export var Tag = <ITagModel>mongoose.model<ITagDoc>('Tag', tagSchema, 'tags');
+export const Tag = <ITagModel>mongoose.model<ITagDoc>('Tag', tagSchema, 'tags');

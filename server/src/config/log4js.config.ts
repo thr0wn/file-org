@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as log4js from 'log4js';
 import * as constants from '../config/constants';
 
-let LOG_METADATA = path.parse(constants.LOG_FILE);
+const LOG_METADATA = path.parse(constants.LOG_FILE);
 
 if (!fs.existsSync(LOG_METADATA.dir)) {
 	fs.mkdirSync(LOG_METADATA.dir);

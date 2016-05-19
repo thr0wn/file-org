@@ -3,7 +3,7 @@ import * as constants from './constants';
 
 export function newConnection() {
 	mongoose.Promise = require('q').Promise;
-	var db = mongoose.connect(
+	const db = mongoose.connect(
 		constants.DATABASE_URI,
 		{ server: { reconnectTries: Number.MAX_VALUE } },
 		(err) => {

@@ -4,7 +4,7 @@ import {Tag} from '../models/tag.model';
 
 export class TagController {
 	public create(req: express.Request, res: express.Response, next: express.NextFunction): void {
-		var tag = new Tag(req.body);
+		const tag = new Tag(req.body);
 		tag.save()
 			.then(() => {
 				res.sendStatus(200);
